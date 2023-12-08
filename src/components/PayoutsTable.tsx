@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	TableContainer,
 	Table,
@@ -11,13 +11,25 @@ import {
 	useToast,
 	Input,
 } from "@chakra-ui/react";
+import { Grid } from "react-loader-spinner";
 import axios from "axios";
+import styled from "styled-components";
 type ResponseType = {
 	dateAndTime: Date;
 	status: string;
 	value: string;
 	username: string;
 };
+const Wrapper = styled.div`
+	width: 100%;
+	margin: 2rem 0;
+	display: flex;
+	align-items: center;
+`;
+const SearchText = styled.h2`
+	display: flex;
+	margin: 0 1rem;
+`;
 function PayoutsTable() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [tableData, setTableData] = useState<ResponseType[] | null>(null);
@@ -72,51 +84,64 @@ function PayoutsTable() {
 		}
 	};
 	return (
-		<TableContainer>
-			<div style={{ width: "40%", margin: " 2rem 0" }}>
-				Search by Username:{" "}
-				<Input placeholder="JohnDoe4" onChange={handleChange} />
-			</div>
-			<Table variant="striped" colorScheme="gray">
-				<Thead>
-					<Tr>
-						<Th>Username</Th>
-						<Th>Date & Time</Th>
-						<Th>Status</Th>
-						<Th>Value</Th>
-					</Tr>
-				</Thead>
-				{isLoading ? (
-					<>loading...</>
-				) : (
-					<Tbody>
-						{tableData?.length === 0 ? (
-							<>No Results Found</>
-						) : (
-							tableData?.map((entry, idx) => (
-								<Tr key={idx}>
-									<Td>{entry.username}</Td>
-									<Td>{new Date(entry.dateAndTime).toDateString()}</Td>
-									<Td>
-										<Tag
-											size={"lg"}
-											borderRadius="full"
-											variant="solid"
-											colorScheme={
-												entry.status === "Pending" ? "gray" : "green"
-											}
-										>
-											{entry.status === "Pending" ? "Pending" : "Paid"}
-										</Tag>
-									</Td>
-									<Td>{entry.value}</Td>
-								</Tr>
-							))
-						)}
-					</Tbody>
-				)}
-			</Table>
-		</TableContainer>
+		<>
+			<Wrapper>
+				<SearchText>Search by Username: </SearchText>
+				<Input placeholder="JohnDoe4" onChange={handleChange} width={"60%"} />
+			</Wrapper>
+			<TableContainer>
+				<Table variant="striped" colorScheme="gray">
+					<Thead>
+						<Tr>
+							<Th>Username</Th>
+							<Th>Date & Time</Th>
+							<Th>Status</Th>
+							<Th>Value</Th>
+						</Tr>
+					</Thead>
+					{isLoading ? (
+						<Wrapper>
+							<Grid
+								height="80"
+								width="80"
+								color="#999dff"
+								ariaLabel="grid-loading"
+								radius="12.5"
+								wrapperStyle={{}}
+								wrapperClass=""
+								visible={true}
+							/>
+						</Wrapper>
+					) : (
+						<Tbody>
+							{tableData?.length === 0 ? (
+								<>No Results Found</>
+							) : (
+								tableData?.map((entry, idx) => (
+									<Tr key={idx}>
+										<Td>{entry.username}</Td>
+										<Td>{new Date(entry.dateAndTime).toDateString()}</Td>
+										<Td>
+											<Tag
+												size={"lg"}
+												borderRadius="full"
+												variant="solid"
+												colorScheme={
+													entry.status === "Pending" ? "gray" : "green"
+												}
+											>
+												{entry.status === "Pending" ? "Pending" : "Paid"}
+											</Tag>
+										</Td>
+										<Td>{entry.value}</Td>
+									</Tr>
+								))
+							)}
+						</Tbody>
+					)}
+				</Table>
+			</TableContainer>
+		</>
 	);
 }
 
