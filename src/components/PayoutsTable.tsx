@@ -30,17 +30,22 @@ const TableHeader = styled.div`
 	text-transform: capitalize;
 	font-size: 0.8rem;
 	font-weight: 500;
-	color: "#6F767E";
+	color: #6f767e;
 `;
 const DateText = styled.div`
 	text-transform: capitalize;
 	font-size: 1rem;
 	font-weight: 500;
-	color: "red";
+	color: #6f767e;
 `;
 const SearchText = styled.h2`
 	display: flex;
 	margin: 0 1rem;
+`;
+const ValueText = styled.h2`
+	font-weight: 600;
+	color: #1a1d1f;
+	font-size: 1rem;
 `;
 function PayoutsTable() {
 	const [isLoading, setIsLoading] = useState(true);
@@ -165,7 +170,9 @@ function PayoutsTable() {
 										<Td>
 											<Tag status={entry.status} />
 										</Td>
-										<Td>{entry.value}</Td>
+										<Td>
+											<ValueText>{entry.value}</ValueText>
+										</Td>
 									</Tr>
 								))
 							)}
