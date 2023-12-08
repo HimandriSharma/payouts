@@ -7,13 +7,13 @@ import {
 	Tbody,
 	Td,
 	Th,
-	Tag,
 	useToast,
 	Input,
 } from "@chakra-ui/react";
 import { Grid } from "react-loader-spinner";
 import axios from "axios";
 import styled from "styled-components";
+import Tag from "./Tag";
 type ResponseType = {
 	dateAndTime: Date;
 	status: string;
@@ -26,6 +26,18 @@ const Wrapper = styled.div`
 	display: flex;
 	align-items: center;
 `;
+const TableHeader = styled.div`
+	text-transform: capitalize;
+	font-size: 0.8rem;
+	font-weight: 500;
+	color: "#6F767E";
+`;
+const DateText = styled.div`
+	text-transform: capitalize;
+	font-size: 1rem;
+	font-weight: 500;
+	color: "red";
+`;
 const SearchText = styled.h2`
 	display: flex;
 	margin: 0 1rem;
@@ -33,7 +45,7 @@ const SearchText = styled.h2`
 function PayoutsTable() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [tableData, setTableData] = useState<ResponseType[] | null>(null);
-	
+
 	const toast = useToast();
 	const getAllData = () => {
 		axios
@@ -58,6 +70,10 @@ function PayoutsTable() {
 	useEffect(() => {
 		getAllData();
 	}, []);
+	// const formatDate = (date) =>{
+	//     const format = new Date(date).format("MMM DD HH:MM");
+	//     return format;
+	// }
 	const handleChange = (e: any) => {
 		setIsLoading(true);
 		if (e.target.value.trim()) {
@@ -95,10 +111,18 @@ function PayoutsTable() {
 				<Table variant="striped" colorScheme="gray">
 					<Thead>
 						<Tr>
-							<Th>Username</Th>
-							<Th>Date & Time</Th>
-							<Th>Status</Th>
-							<Th>Value</Th>
+							<Th>
+								<TableHeader>Username</TableHeader>
+							</Th>
+							<Th>
+								<TableHeader>Date & Time</TableHeader>
+							</Th>
+							<Th>
+								<TableHeader>Status</TableHeader>
+							</Th>
+							<Th>
+								<TableHeader>Value</TableHeader>
+							</Th>
 						</Tr>
 					</Thead>
 					{isLoading ? (
@@ -122,18 +146,11 @@ function PayoutsTable() {
 								tableData?.map((entry, idx) => (
 									<Tr key={idx}>
 										<Td>{entry.username}</Td>
-										<Td>{new Date(entry.dateAndTime).toDateString()}</Td>
 										<Td>
-											<Tag
-												size={"lg"}
-												borderRadius="full"
-												variant="solid"
-												colorScheme={
-													entry.status === "Pending" ? "gray" : "green"
-												}
-											>
-												{entry.status === "Pending" ? "Pending" : "Paid"}
-											</Tag>
+											<DateText>{}</DateText>
+										</Td>
+										<Td>
+											<Tag status={entry.status} />
 										</Td>
 										<Td>{entry.value}</Td>
 									</Tr>
@@ -143,7 +160,6 @@ function PayoutsTable() {
 					)}
 				</Table>
 			</TableContainer>
-			
 		</>
 	);
 }
