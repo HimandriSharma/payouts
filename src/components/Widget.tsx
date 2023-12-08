@@ -13,6 +13,8 @@ const Wrapper = styled.div`
 const Text = styled.h2`
 	display: flex;
     margin: 1rem;
+    font-weight: 500;
+    font-size: 1.6rem;
 `;
 function Widget() {
 	return (

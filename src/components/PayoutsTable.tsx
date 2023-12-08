@@ -33,7 +33,7 @@ const SearchText = styled.h2`
 function PayoutsTable() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [tableData, setTableData] = useState<ResponseType[] | null>(null);
-
+	
 	const toast = useToast();
 	const getAllData = () => {
 		axios
@@ -60,25 +60,27 @@ function PayoutsTable() {
 	}, []);
 	const handleChange = (e: any) => {
 		setIsLoading(true);
-		if (e.target.value) {
-			axios
-				.get(
-					`https://theseus-staging.lithium.ventures/api/v1/analytics/tech-test/search?query=${e.target.value}`
-				)
-				.then((data) => {
-					setTableData(data.data);
-					setIsLoading(false);
-				})
-				.catch((err) => {
-					toast({
-						title: err.name,
-						description: err.message,
-						status: "error",
-						duration: 2000,
-						isClosable: true,
-						position: "top-right",
+		if (e.target.value.trim()) {
+			setTimeout(() => {
+				axios
+					.get(
+						`https://theseus-staging.lithium.ventures/api/v1/analytics/tech-test/search?query=${e.target.value}`
+					)
+					.then((data) => {
+						setTableData(data.data);
+						setIsLoading(false);
+					})
+					.catch((err) => {
+						toast({
+							title: err.name,
+							description: err.message,
+							status: "error",
+							duration: 2000,
+							isClosable: true,
+							position: "top-right",
+						});
 					});
-				});
+			}, 1000);
 		} else {
 			getAllData();
 		}
@@ -141,6 +143,7 @@ function PayoutsTable() {
 					)}
 				</Table>
 			</TableContainer>
+			
 		</>
 	);
 }
