@@ -70,11 +70,22 @@ function PayoutsTable() {
 	useEffect(() => {
 		getAllData();
 	}, []);
-	// const formatDate = (date) =>{
-	//     const format = new Date(date).format("MMM DD HH:MM");
-	//     return format;
-	// }
-	const handleChange = (e: any) => {
+	function convertIsoToCustomFormat(isoDateString: Date) {
+		const options: Intl.DateTimeFormatOptions = {
+			weekday: "short",
+			day: "numeric",
+			month: "short",
+			hour: "numeric",
+			minute: "numeric",
+			hour12: false,
+		};
+
+		const date = new Date(isoDateString);
+		const formattedDate = date.toLocaleString("en-US", options);
+
+		return formattedDate;
+	}
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setIsLoading(true);
 		if (e.target.value.trim()) {
 			setTimeout(() => {
@@ -147,7 +158,9 @@ function PayoutsTable() {
 									<Tr key={idx}>
 										<Td>{entry.username}</Td>
 										<Td>
-											<DateText>{}</DateText>
+											<DateText>
+												{convertIsoToCustomFormat(entry.dateAndTime)}
+											</DateText>
 										</Td>
 										<Td>
 											<Tag status={entry.status} />
