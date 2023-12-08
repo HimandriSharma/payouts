@@ -35,7 +35,7 @@ const TableHeader = styled.div`
 const DateText = styled.div`
 	text-transform: capitalize;
 	font-size: 1rem;
-	font-weight: 500;
+	font-weight: 600;
 	color: #6f767e;
 `;
 const SearchText = styled.h2`
@@ -124,9 +124,8 @@ function PayoutsTable() {
 				<Input placeholder="JohnDoe4" onChange={handleChange} width={"60%"} />
 			</Wrapper>
 			<TableContainer>
-				<Table variant="striped" colorScheme="gray">
+				<Table variant="mytable" colorScheme="gray">
 					<Thead>
-						<Tr>
 							<Th>
 								<TableHeader>Username</TableHeader>
 							</Th>
@@ -139,7 +138,6 @@ function PayoutsTable() {
 							<Th>
 								<TableHeader>Value</TableHeader>
 							</Th>
-						</Tr>
 					</Thead>
 					{isLoading ? (
 						<Wrapper>
